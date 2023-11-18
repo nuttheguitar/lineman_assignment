@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  knn_model:
+    image: deployment-knn_model:latest
+    build: .
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./app:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/recommend/u00001"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  k6_perf_test:
+    image: loadimpact/k6:latest
+    platform: "linux/amd64"
+    volumes:
+      - ./perf_test:/perf_test
+    depends_on:
+      knn_model: 
+        condition: service_healthy
+    command: "run /perf_test/perf_test.js --summary-export=/perf_test/perf_results.csv"
