@@ -24,12 +24,15 @@ def recommend_restaurants(user_id):
     return {"restaurant": recommended_restaurant_ids}, 200
 
 @app.route('/recommend/<user_id>', methods=['GET'])
-@app.route('/ready', methods=['GET'])
 
 def recommend(user_id):
     if request.method == 'GET':
         result, status_code = recommend_restaurants(user_id)
         return jsonify(result), status_code
+
+@app.route('/ready', methods=['GET'])
+def ready():
+    return 'OK'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5005)
