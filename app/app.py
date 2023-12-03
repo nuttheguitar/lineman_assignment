@@ -9,8 +9,8 @@ app = Flask("__name__")
 with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
-user_df = pd.read_parquet("user.parquet")
-restaurant_df = pd.read_parquet("restaurant.mapping.parquet").set_index("index")
+user_df = pd.read_parquet("../dataset/user.parquet")
+restaurant_df = pd.read_parquet("../dataset/restaurant.mapping.parquet").set_index("index")
 
 def recommend_restaurants(user_id):
     # Find 20 nearest neighbors to recommend restaurants
@@ -24,7 +24,6 @@ def recommend_restaurants(user_id):
     return {"restaurant": recommended_restaurant_ids}, 200
 
 @app.route('/recommend/<user_id>', methods=['GET'])
-
 def recommend(user_id):
     if request.method == 'GET':
         result, status_code = recommend_restaurants(user_id)
@@ -32,7 +31,7 @@ def recommend(user_id):
 
 @app.route('/ready', methods=['GET'])
 def ready():
-    return 'OK'
+    return 'OK'    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5005)

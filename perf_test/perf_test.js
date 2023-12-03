@@ -24,7 +24,7 @@ export default function () {
   let generatedUserID = generateRandomUserID();
 
   // Measure GET request
-  let getResponse = http.get(`http://host.docker.internal:5005/recommend/${generatedUserID}`);
+  let getResponse = http.get(`http://knn_model:5005/recommend/${generatedUserID}`);
 
   check(getResponse, {
     'GET status is 200': (r) => r.status === 200,

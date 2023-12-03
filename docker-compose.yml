@@ -2,12 +2,12 @@ version: '3'
 
 services:
   knn_model:
-    image: deployment-knn_model:latest
     build: .
     ports:
       - "5005:5005"
     volumes:
       - ./app:/app
+      - ./dataset:/dataset
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5005/ready"]
       interval: 5s
